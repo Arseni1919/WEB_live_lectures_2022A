@@ -1,3 +1,8 @@
 <header>
-    <a href="/">Home</a> | <a href="/about">About</a> | <a href="/catalog">Catalog</a>
+    <a href="/">Home</a> | <a href="/about">About</a> | <a href="/catalog">Catalog</a> |
+    {% if session.username %}
+        <a href="/logout">Log out</a>
+    {% else %}
+        <a href="/login">Log In</a>
+    {% endif %}
 </header>

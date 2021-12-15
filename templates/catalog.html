@@ -7,5 +7,17 @@ Catalog
 {% block tohen %}
     {{ super() }}
     <h1>Welcome to Catalog page!</h1>
+    <form action="/catalog" method="GET">
+        Product: <input name="product" type="text">
+        Size: <input name="size" type="text">
+        <input type="submit">
+    </form>
+    {% if p_name %}
+        <h3>You picked product: {{ p_name }}</h3>
+    {% endif %}
+    {% if p_size %}
+        <h3>You picked size: {{ p_size }}</h3>
+    {% endif %}
+
 {% endblock %}
 

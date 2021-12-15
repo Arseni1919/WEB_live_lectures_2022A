@@ -5,9 +5,7 @@ Home
 {% endblock %}
 
 {% block tohen %}
-    {{ super() }}
-    {% set page_name='Home' %}
-    <h1>Welcome to {{ page_name }} page!</h1>
+    <h1>Welcome, {{ session.username | default('guest', true) }}!</h1>
     <h2 class="{% if name %}logged_in{% else %}stranger{% endif %}">BGU</h2>
 
     {% if name %}
