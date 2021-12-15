@@ -1,14 +1,3 @@
-# KOTERET
-## KOTERET MISHNIT
-### ODD
-#### ODD
+# WEB course 2022 A
 
-[link](www.google.com)
 
-- item
-- item
-- item
-
-1. item
-1. item
-1. item

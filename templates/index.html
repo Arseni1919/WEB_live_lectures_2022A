@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block tohen %}
+    {{ super() }}
+    {% set page_name='Home' %}
+    <h1>Welcome to {{ page_name }} page!</h1>
+    <h2 class="{% if name %}logged_in{% else %}stranger{% endif %}">BGU</h2>
+
+    {% if name %}
+        <h3><a href="/about">Info about me</a></h3>
+    {% else %}
+        <h3>Please log in to the website...</h3>
+    {% endif %}
+{% endblock %}
