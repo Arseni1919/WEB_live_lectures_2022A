@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Req Backend
+{% endblock %}
+
+{% block tohen %}
+    <h1>Req Backend</h1>
+    <h2>Pockemons</h2>
+    <form action="/req_backend">
+        <input type="number" name="number">
+        <input type="submit" value="Get Pockemons">
+    </form>
+    {% if pockemons %}
+        {% for pokemon in pockemons %}
+            <h3>Pockemon {{ pokemon.id }}: </h3>
+            <img src="{{ pokemon.sprites.front_default }}" alt="pic">
+            <h4>Name: {{ pokemon.name }}</h4>
+            <h4>height: {{ pokemon.height }}</h4>
+            <h4>Weight: {{ pokemon.weight }}</h4>
+            <hr>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
