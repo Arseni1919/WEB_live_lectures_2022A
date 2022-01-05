@@ -1,7 +1,10 @@
 from flask import Flask, redirect, url_for, render_template
 from flask import request
 from flask import session
+from flask import jsonify
 import requests
+import asyncio
+import aiohttp
 import random
 from interact_with_DB import *
 
@@ -75,6 +78,40 @@ def login_func():
 # ------------------------------------------------- #
 # -------------------- USERS ---------------------- #
 # ------------------------------------------------- #
+
+
+@app.route('/db_users', defaults={'user_id': -1, 'orders': 'my orders'})
+@app.route('/db_users/<int:user_id>', defaults={'orders': 'my orders'})
+@app.route('/db_users/<int:user_id>/<orders>')
+def get_users_func(user_id, orders):
+    if user_id == -1:
+        return_dict = {}
+        query = 'select * from users;'
+        users = interact_db(query=query, query_type='fetch')
+        for user in users:
+            return_dict[f'user_{user.id}'] = {
+                'status': 'success',
+                'name': user.name,
+                'email': user.email,
+            }
+    else:
+        query = 'select * from users where id=%s;' % user_id
+        users = interact_db(query=query, query_type='fetch')
+        # print(type(user_id))
+        if len(users) == 0:
+            return_dict = {
+                'status': 'failed',
+                'message': 'user not found'
+            }
+        else:
+            return_dict = {
+                'status': 'success',
+                'id': users[0].id,
+                'name': users[0].name,
+                'email': users[0].email,
+                'orders': orders,
+            }
+    return jsonify(return_dict)
 
 
 @app.route('/users')
@@ -214,6 +251,40 @@ def req_backend_func():
     if "number" in request.args:
         num = int(request.args['number'])
     pockemons = get_pockemons(num)
+    return render_template('req_backend.html', pockemons=pockemons)
+
+
+async def fetch_url(client_session, url):
+    """Fetch the specified URL using the aiohttp session specified."""
+    # response = await session.get(url)
+    async with client_session.get(url, ssl=False) as resp:
+        response = await resp.json()
+        return response
+
+
+async def get_all_urls(num):
+    async with aiohttp.ClientSession(trust_env=True) as client_session:
+        tasks = []
+        for i in range(num):
+            random_n = random.randint(1, 100)
+            url = f'https://pokeapi.co/api/v2/pokemon/{random_n}'
+            task = asyncio.create_task(fetch_url(client_session, url))
+            tasks.append(task)
+        data = await asyncio.gather(*tasks)
+    return data
+
+
+def get_pockemons_async(num=3):
+    pockemons = asyncio.run(get_all_urls(num))
+    return pockemons
+
+
+@app.route('/req_backend_async')
+def req_backend_async_func():
+    num = 3
+    if "number" in request.args:
+        num = int(request.args['number'])
+    pockemons = get_pockemons_async(num)
     return render_template('req_backend.html', pockemons=pockemons)
 
 

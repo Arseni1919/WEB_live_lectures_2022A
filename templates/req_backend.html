@@ -9,8 +9,14 @@ Req Backend
     <h2>Pockemons</h2>
     <form action="/req_backend">
         <input type="number" name="number">
-        <input type="submit" value="Get Pockemons">
+        <input type="submit" value="Sync - Get Pockemons">
     </form>
+    <br>
+    <form action="/req_backend_async">
+        <input type="number" name="number">
+        <input type="submit" value="Async - Get Pockemons">
+    </form>
+
     {% if pockemons %}
         {% for pokemon in pockemons %}
             <h3>Pockemon {{ pokemon.id }}: </h3>

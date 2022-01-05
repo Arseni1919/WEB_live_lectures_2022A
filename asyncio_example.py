@@ -23,6 +23,7 @@ async def async_gather():
 
 def main_2():
     asyncio.run(async_gather())
+    print('finish - global')
 
 
 def main_1():
@@ -32,7 +33,7 @@ def main_1():
 
 if __name__ == "__main__":
     s = time.time()
-    # main_1()
-    main_2()
+    # main_1()  # sync
+    main_2()  # async
     elapsed = time.time() - s
     print(f"Executed in {elapsed:0.2f} seconds.")
